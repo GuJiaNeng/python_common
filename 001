@@ -1,0 +1,96 @@
+ 最常用的Python代码段
+
+这些常用的代码段可以让不懂Python的人感受到Python的魅力, 同时让编写啰里啰嗦语言的人们看到未来~~  更快地了解Python, 加入Python部落(www.freelycode.com)
+
+
+过滤列表
+
+
+    #filter out empty strings in a sting list
+    list = [x for x in list if x.strip()!='']
+
+
+一行一行地读文件
+
+
+    with open("/path/to/file") as f:
+        for line in f:
+            print line
+
+
+逐行写文件
+
+
+    f = open("/path/tofile", 'w')
+    for e in aList:    f.write(e + "\n")f.close()
+
+
+正则匹配查找
+
+
+    sentence = "this is a test, not testing."
+    it = re.finditer('\\btest\\b', sentence)
+    for match in it:
+        print "match position: " + str(match.start()) +"-"+ str(match.end())
+
+
+正则匹配搜索
+
+
+    m  . line  m:    current  m.
+
+
+查询数据库
+
+
+    db = MySQLdb.connect("localhost","username","password","dbname")
+    cursor = db.cursor()
+    sql = "select Column1,Column2 from Table1"
+    cursor.execute(sql)
+    results = cursor.fetchall() 
+    for row in results:
+        print row[0]+row[1] db.close()
+
+
+用指定字符连接列表
+
+
+    theList = ["a","b","c"]
+    joinedString = ",".join(theList)
+
+
+去除重复元素
+
+
+    targetList = list(set(targetList))
+
+
+在一列字符串中去除空字符串
+
+
+    targetList = [v for v in targetList if not v.strip()=='']
+    # or
+    targetList = filter(lambda x: len(x)>0, targetList)
+
+
+将一个列表连接到另一个列表后面
+
+
+    anotherList.extend(aList)
+
+
+遍历一个字典
+
+
+    for k,v in aDict.iteritems():
+        print k+v
+
+
+
+检查一列字符串中是否有任何一个出现在指定字符串里
+
+
+    if any(x in targetString for x in aList):
+        print "true"
+
+
