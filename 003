@@ -1,0 +1,1377 @@
+用于记录自己写的，或学习期间看到的不错的，小程序，持续更新......
+****************************************************************
+【例001】计算:1-2+3-4..+199-200值
+复制代码 代码如下:
+
+#encoding=utf-8 
+#计算 1-2+3-4..+199-200值 
+#1+3+5+7+...199 
+#-2-4-6...-200 
+sum1  = 0 
+sum2  = 0 
+for i in range(1,200,2):      #计算1+3+5+7...199 
+    sum1 +=i 
+print sum1 
+ 
+ 
+for i in range(-200,0,2):    #计算-2+(-4)+(-6)...+(-200) 
+    sum2 +=i 
+print sum2 
+ 
+ 
+print "The total of 1-2+3-4..+199-200 is: ", sum1+sum2 
+
+【例002】将两个文件中相同的部分，写到一个文件中
+复制代码 代码如下:
+
+#encoding=utf-8 
+#Python 2.7.4 
+#Purpose:  将文件1.txt,2.txt中相同的内容放到3.txt中; 
+f1 = open("1.txt","r+") 
+f2 = open("2.txt","r+") 
+f3 = open("3.txt","w+") 
+ 
+ 
+all1 = f1.readlines()    #先拿文件1中所有行取出 
+all2 = f2.readlines()    #再拿文件2中所有行取出 
+f1.close() 
+f2.close() 
+ 
+ 
+for l1 in all1: 
+    for l2 in all2: 
+        if l1.strip()==l2.strip():  #比较行中内容是否一样 
+            f3.write(l2) 
+    else: 
+        continue 
+else: 
+    pass 
+         
+print "#"*40 
+f3.close() 
+
+【例003】反向读取文件
+假如要读取的test.txt文件内容如下: 
+复制代码 代码如下:
+
+Python 
+Perl 
+Java 
+Shell 
+
+实现代码:
+复制代码 代码如下:
+
+file1 = file('test.txt','r') 
+list1 = []  #用一个空列表用于存放每行的内容 
+while True: 
+    line = file1.readline() 
+    list1.append(line.strip()) 
+    if len(line) == 0: 
+        break 
+for l in list1[::-1]: #反向遍历，然后依次读取出来 
+    print l 
+ 
+file1.close() 
+
+输出结果: 
+复制代码 代码如下:
+
+Shell 
+Java 
+Perl 
+Python 
+
+【例004】 往文件中所有添加指定的前缀
+
+比如文中: print是一个函数
+
+文本文件强制二进制编码
+就变成了下面的
+复制代码 代码如下:
+
+01.Python 3.0:  #print是一个函数 
+02.Python 3.0:  #文本文件强制二进制编码 
+#coding = gbk     #中文编码 
+ 
+f_r = open('test.txt')     #打开要处理文件 
+f_w = open('file.txt','w') #创建要添加文件 
+ 
+i = 0    #加前缀标志位 
+ 
+while True: 
+    i += 1 
+    line = f_r.readline() 
+    if not line: 
+        break 
+    f_w.write('%02d'%(i) + '.Python 3.0:  #' + line)#字符串格式化及拼接技巧 
+ 
+f_r.close()   #关闭打开的文件句柄 
+f_w.close()   
+
+【例005】
+复制代码 代码如下:
+
+#coding = gbk 
+'''''
+下面code.txt文件中内容，将
+01 CN Chinese
+02 IN India
+03 HK HongKang
+04 JP Japan
+05 DE Germany
+06 US United States of America
+要文件的内容，每一行文件，写到一个文件，且文件名前面两个字段，如
+文件名为:01_CN_Chinese.txt
+文中内容:01 CN Chinese
+知识要点:
+1. ''.join 和 split函数
+2. 字符的联合
+3. with语句,open文件
+4. 遍历数组
+5. 切片操作
+''' 
+postfix = '.txt'                     #设置后缀 
+ 
+with open('test.txt') as myfile:     #with语句打开文件为myfile 
+    while True:                      #while循环拿文件读出来 
+        lines = myfile.readlines()   #拿所有的行一次性读取到列表中 
+        if not lines: break          #没有则中断 
+        for line in lines:           #遍历列表 
+            file_out = str('_'.join(line.split()[:])) + postfix #得到01_CN_Chinese.txt文件名 
+            open(file_out,'w').write(line)                      #write(line),将没行的文件写入新文件中 
+
+【例006】
+复制代码 代码如下:
+
+#coding = gbk 
+'''''
+#最终实现下面的过程
+foos = [1.0, 2.0, 3.0, 4.0, 5.0]
+bars = [100, 200, 300, 400, 500]
+ 
+1.0 [200, 300, 400, 500]
+2.0 [100, 300, 400, 500]
+3.0 [100, 200, 400, 500]
+4.0 [100, 200, 300, 500]
+5.0 [100, 200, 300, 400]
+#知识点
+1. map函数的理解
+2. 关键是切片函数的应用
+ 
+''' 
+ 
+foos = [1.0, 2.0, 3.0, 4.0, 5.0] 
+bars = [100, 200, 300, 400, 500] 
+ 
+def func(foo): 
+    index = foos.index(foo) #foo在foos中的索引，拿她取出来 
+    print foo,bars[:][0:index] + bars[:][index+1:] 
+    #该索引同样在bars中相同位置，在切片的时候拿它取出，并拼接这个切片 
+    #大功告成！ 
+ 
+print map(func,foos) 
+
+【例007】求 6! + 5! + 4! + 3! + 2! + 1!
+复制代码 代码如下:
+
+def factorial(n): 
+    return reduce(lambda x,y: x* y, range(1,n+1))#求6!
+ 
+print reduce(lambda x,y: x + y, [factorial(i) for i in range(1,6)]) #求6! + 5! + 4! + 3! + 2! + 1!
+
+【例008】 根据输入打印文件
+
+复制代码 代码如下:
+
+import sys 
+ 
+helpinfo= '''''\
+This program prints files to the standard output.
+Any number of files can be specified.
+Options include:
+--[version|VERSION|V|v]: Prints the version number
+--[help   |HELP   |H|h]: Display the help
+''' 
+ 
+def readfile(filename): 
+    try: 
+        f = open(filename) 
+        while True: 
+            line = f.readline() 
+            if not line: 
+                break 
+            print line, 
+    except: 
+        print 'some error here' 
+ 
+if len(sys.argv) < 2: 
+    print 'No action is needed!' 
+    sys.exit() 
+ 
+if sys.argv[1].startswith('--'): 
+    option = sys.argv[1][2:] 
+    if option in ['version','v','V','VERSION']: 
+        print 'Version 1.0' 
+    elif option in ['h','H','help','HELP']: 
+        print helpinfo 
+    else: 
+        print 'Unknown option.' 
+    sys.exit() 
+     
+else: 
+    for filename in sys.argv[1:]: 
+        readfile(filename) 
+
+【例009】函数中args的用法
+复制代码 代码如下:
+
+def powersum(power,*args): 
+    '''''Print each argument's power''' 
+    total = 0 
+    for item in args: 
+        total += pow(item,power) 
+    return total 
+ 
+print powersum(2,3,4)  # (3**2) + (4**2) 
+print powersum(2,10)   # 10**2 
+print powersum(2)      # 0**2 
+
+【例010】匿名函数作为返回值
+复制代码 代码如下:
+
+def repeater(n): 
+    print n 
+    return lambda s: s*n 
+ 
+twice = repeater(2) 
+ 
+print twice('Hello') 
+print twice(5) 
+
+【例011】备份程序
+复制代码 代码如下:
+
+#!/usr/bin/env python 
+ 
+import os,time 
+source     = ['/home/test/C','/home/test/shell']             #源文件目录 
+target_dir = '/home/test/python'                             #目标文件目录 
+ 
+today      = target_dir + time.strftime('%Y%m%d')            # 
+now        = time.strftime('%H%M%S') 
+ 
+if not os.path.exists(today):                                 #判断目录是否存在 
+  os.mkdir(today)                                             #不存在的话则新建 
+  print 'Successfully created directory', today 
+ 
+target     = today + os.sep + now + '.zip'                    #target文件格式 
+zip_cmd    = "zip -qr '%s' %s" % (target, ' '.join(source))   #-q:安静模式 -r递归模式 
+#等价于 zip -qr /home/test/python20141202/142151.zip /home/test/C /home/test/shell 
+if os.system(zip_cmd) == 0:     #判断命令是否成功执行，成功执行，返回0 
+  print 'Successful back to:', target 
+else:                           #失败的话，打印信息 
+  print 'Backup FAILED.' 
+ 
+
+加comment的版本
+复制代码 代码如下:
+
+#!/usr/bin/env python 
+ 
+import os,time 
+ 
+source     = ['/home/test/C','/home/test/shell'] 
+target_dir = '/home/test/python' 
+ 
+today      = target_dir + time.strftime('%Y%m%d') 
+now        = time.strftime('%H%M%S') 
+ 
+comment    = raw_input('Enter comments here-->')   #要输入的comment 
+if len(comment) == 0:                              #如果没有comment 
+  target = today + os.sep + now + '.zip'           #按照上面的操作执行 
+else: 
+  target = today + os.sep + now + '_' + comment.replace(' ','_') + '.zip' 
+#如果有comment,  
+ 
+if not os.path.exists(today): 
+  os.mkdir(today) 
+  print 'The backup directory created!', today 
+ 
+zip_command = "zip -qr '%s' %s" % (target, ' '.join(source)) 
+ 
+if os.system(zip_command) == 0: 
+  print 'Scuccessful backup to', target 
+else: 
+  print 'The backup FAILED' 
+ 
+
+输出结果 ：
+复制代码 代码如下:
+
+# python backup_ver4.py
+Enter comments here-->add new example
+The backup directory created! /home/test/python20141202
+Scuccessful backup to /home/test/python20141202/145130_add_new_example.zip
+
+【例012】将二进制数转为10进制数
+复制代码 代码如下:
+
+def func(B): 
+    I = 0 
+    while B: 
+        I = I * 2 + (ord(B[0])-ord('0')) 
+        B = B[1:] 
+    return I 
+ 
+b = raw_input('Enter binary here:') 
+ 
+print func(b) 
+
+【例013】将列表中排除重复项并将重复的项找出
+复制代码 代码如下:
+
+def find_duplicate(lst): 
+    tmp = []                               #临时变量，存放排除后的列表 
+    for item in lst:             
+        if not item in tmp:                #将不在tmp变量找出 
+            tmp.append(item) 
+        else: 
+            print 'The duplicate item is:', item 
+    print 'After remove the duplicate item:',  
+    return tmp 
+ 
+if __name__=='__main__': 
+    test = input("Enter List here:")        #input技巧 
+    print find_duplicate(test) 
+>>>
+Enter List here:[2,1,4,2]
+The duplicate item is: 2
+After remove the duplicate item: [2, 1, 4]
+
+【例014】用Python中列表中append()，pop()函数实现简单的堆栈方法:后进先出
+复制代码 代码如下:
+
+l = [] 
+l.append(1) 
+l.append(2) 
+l.append(3) 
+print l 
+print l.pop() 
+print l.pop() 
+print l.pop() 
+
+     
+【例015】对列表中的单词按首字母排序
+复制代码 代码如下:
+
+>>> words = ['apple','bat','bar','book','atom'] 
+>>> tmp   = {}                #建个空字典   
+>>> for word in words: 
+    letter = word[0]      #作为字典中的键 
+    if letter not in tmp: #判断首字母是否存在于字典 
+        tmp[letter] = [word]      #注意要添加[],很关键 
+    else: 
+        tmp[letter].append(word)  #如果键已经存在，值列表添加 
+ 
+         
+>>> tmp 
+{'a': ['apple', 'atom'], 'b': ['bat', 'bar', 'book']} 
+
+【例016】对文件进行整理（除空格、TAB键、除#!&?等键），假如文本文件全为人名，并让首字母大写
+复制代码 代码如下:
+
+  john black 
+Jerry! 
+&alice 
+TOm# 
+south carolina### 
+mr  smith? 
+
+代码及输出结果如下:
+复制代码 代码如下:
+
+import re 
+ 
+def clean(strings): 
+    result = [] 
+    for value in strings: 
+        value = value.strip() 
+        value = re.sub('[#!&?]','',value) 
+        value = value.title() 
+        result.append(value) 
+    return result 
+ 
+with open('data.txt','a+') as myfile: 
+    lines = myfile.readlines() 
+    for line in clean(lines): 
+        print line 
+>>>  
+John Black 
+Jerry 
+Alice 
+Tom 
+South Carolina 
+Mr Smith 
+
+【例017】用while循环来判断某个数是否是质数
+复制代码 代码如下:
+
+y = input('Enter a integer Here:') 
+ 
+x = y / 2 
+ 
+while x > 1:     
+    if y % x == 0: 
+        print y, 'has factor', x 
+        break 
+    x -= 1 
+     
+else: 
+    print y, 'is prime' 
+
+【例018】用while实现搜索某个字符串的功能
+复制代码 代码如下:
+
+names = ['Tom','Alice','Wendy','Jerry','Bob','Smith'] 
+ 
+while names: 
+    if names[0] == 'Jerry': 
+        print 'Hi,', names[0] 
+        break 
+    names = names[1:] 
+     
+else: 
+    print 'Not Found!' 
+ 
+
+【例019】对嵌套的序列进行处理
+复制代码 代码如下:
+
+>>> T = ((1,2),(3,4),(5,6)) 
+>>> for (a,b) in T: 
+...   print a+100, b+200 
+... 
+101 202 
+103 204 
+105 206 
+
+【例020】用for循环实现查找
+复制代码 代码如下:
+
+source = ['sting',(3,4),100,0.1,[1,2]] 
+tests  = [(3,4),3.14] 
+ 
+for t in tests:             #先是遍历小循环 
+    for s in source:        #再遍历外层循环 
+        if s == t: 
+            print t, 'Found it! ' 
+            break 
+    else:                    #else语句的位置非常关键， 
+        print t, 'Not Found!' 
+
+等价于下面这种方式
+复制代码 代码如下:
+
+source = ['sting',(3,4),100,0.1,[1,2]] 
+tests  = [(3,4),100,3.14] 
+ 
+for t in tests: 
+    if t in source: 
+        print t, 'Found it.' 
+    else: 
+        print t, 'Not found.' 
+
+【例021】用for循环来收集两个序列中相同的部分
+复制代码 代码如下:
+
+seq1 = 'spam' 
+seq2 = 'suck' 
+ 
+res  = [] 
+for s1 in seq1: 
+    if s1 in seq2: 
+        res.append(s1) 
+ 
+print res 
+
+【例022】隔个取出字符串
+复制代码 代码如下:
+
+S = 'abcdefghijklmn' 
+ 
+for i in range(0,len(S),2): 
+    print S[i], 
+ 
+#或者 
+print S[::2] 
+
+【例023】两个列表，列表中每个元素加100，然后与L1中对应元素相乘，形成列表，再对列表求和
+复制代码 代码如下:
+
+L1 = [1,2,3,4]  
+L2 = [5,6,7,8] #L2每个元素加一百,105,106,107 
+#(5+100)*1 + (6+100)*2 + (100+7)*3 + (100+8)*4 
+# 合计: 1070 
+L3 = [x+100 for x in L2] 
+L4 = [] 
+ 
+for (x,y) in zip(L1,L3): 
+    L4.append(x*y) 
+     
+print sum(L4) 
+ 
+#或者用下面精简方式，只是刚看到有点头痛! 
+print sum([x*y for x,y in [T for T in zip(L1,[x+100 for x in L2])]])
+
+【例024】对列表进行，合并，去重，取交集等操作
+复制代码 代码如下:
+
+def func(seq1, seq2=None, opra=None): 
+    res = []    
+    if opra   == '-': 
+        for item1 in seq1: 
+            if item1 not in seq2: 
+                res.append(item1) 
+                 
+    elif opra == '&': 
+        for item1 in seq1: 
+            if item1 in seq2: 
+                res.append(item1) 
+                 
+    elif opra == '|': 
+        tmp = seq1[:] 
+        for item1 in seq2: 
+            if item1 not in seq1: 
+                tmp.append(item1) 
+        return tmp 
+     
+    elif opra == '^': 
+ 
+        for i in seq1: 
+            if i not in seq2: 
+                res.append(i) 
+        for i in seq2: 
+            if i not in seq1: 
+                res.append(i)            
+        return res 
+     
+    else: 
+        print 'Need list as input!' 
+ 
+    return res 
+ 
+L1 = [1,2,3,4] 
+L2 = [3,4,5,6] 
+ 
+print '[L1 - L2]:',func(L1,L2,'-') 
+print '[L1 & L2]:',func(L1,L2,'&') 
+print '[L1 | L2]:',func(L1,L2,'|') 
+print '[L1 ^ L2]:',func(L1,L2,'^') 
+ 
+ 
+def list_remove(seq): 
+    res = [] 
+    for i in seq: 
+        if i not in res: 
+            res.append(i) 
+    return res 
+ 
+L1 = [3,1,2,3,8] 
+print list_remove(L1) 
+ 
+ 
+def find_duplicate(seq): 
+    res = [] 
+    for i in range(len(seq)): 
+        if seq.count(seq[i]) >= 2: 
+            print 'Found %s'% seq[i], 'The index is:', i 
+            res.append(seq[i]) 
+    return res 
+ 
+L1 = [3,1,2,3,8] 
+print find_duplicate(L1) 
+
+结果如下:
+复制代码 代码如下:
+
+>>>  
+[L1 - L2]: [1, 2] 
+[L1 & L2]: [3, 4] 
+[L1 | L2]: [1, 2, 3, 4, 5, 6] 
+[L1 ^ L2]: [1, 2, 5, 6] 
+[3, 1, 2, 8] 
+Found 3 The index is: 0 
+Found 3 The index is: 3 
+[3, 3] 
+
+【例025】通过函数改变全局变量的三种方式
+复制代码 代码如下:
+
+var = 99 
+ 
+def local(): 
+    var = 0 
+ 
+def glob1(): 
+    global var 
+    var += 1 
+ 
+def glob2(): 
+    var = 0 
+    import Learn 
+    Learn.var += 1 
+ 
+def glob3(): 
+    var = 0 
+    import sys 
+    glob = sys.modules['Learn'] 
+    glob.var += 1 
+ 
+def test(): 
+    print var 
+    local();glob1();glob2();glob3() 
+    print var 
+
+【例026】求range(10)中每个元素的立方
+复制代码 代码如下:
+
+def func(): 
+    res = [] 
+    for i in range(10): 
+        res.append(lambda x, i=i: i ** x) #i=i这是关键，否则i默认记忆最后一个值:9 
+    return res 
+ 
+>>> res = func() 
+>>> for i in range(10): 
+    res[i](3)    
+0 
+1 
+8 
+27 
+64 
+125 
+216 
+343 
+512 
+729 
+
+【例027】求最小值
+复制代码 代码如下:
+
+def min1(*args): 
+    mini = args[0] 
+    for arg in args[1:]: 
+        if arg < mini: 
+            mini = arg 
+    return mini 
+ 
+def min2(first,*rest): 
+    mini  = first 
+    for arg in rest: 
+        if arg < first: 
+            mini = arg 
+    return mini 
+ 
+def min3(*args): 
+    res = list(args) 
+    res.sort() 
+    return res[0] 
+ 
+print min1('c','a','b') 
+print min2(3,1,4) 
+print min3(1,'a',78,'c') 
+def func(test, *args): 
+    res = args[0] 
+    for arg in args[1:]: 
+        if test(arg, res): 
+            res = arg 
+    return res 
+         
+def lessthan(x, y): return x < y 
+def morethan(x, y): return x > y 
+ 
+print func(lessthan, 4,3,1,2,9) 
+print func(morethan, 4,3,1,2,9) 
+
+【例028】求多个集合的交集及合集
+复制代码 代码如下:
+
+def intersect(*args): 
+    res = [] 
+    for x in args[0]: 
+        for other in args[1:]: 
+            if x not in other: 
+                break 
+            else: 
+                res.append(x) 
+    return set(res)        #去除重复的部分 
+ 
+print intersect('SPAM','SCAM','SLAM') 
+     
+def union(*args): 
+    res = [] 
+    for seq in args: 
+        for item in seq: 
+            if not item in res: 
+                res.append(item) 
+    return res 
+ 
+print union('SA','SB','SC') 
+def intersect(*args): 
+    res = [] 
+    for x in args[0]: 
+        for other in args[1:]: 
+            if x not in other: 
+                break 
+            else: 
+                res.append(x) 
+    #为了交互['S','S','A','A','M','M'] 
+    tmp = [] 
+    [tmp.append(i) for i in res if i not in tmp] 
+    return tmp 
+ 
+print intersect('SCAM','SPAM','SLAM') 
+
+【例029】字典的拷贝及添加
+复制代码 代码如下:
+
+def copyDict(old): 
+    new = {} 
+    for key in old: 
+        new[key] = old[key] 
+    return new 
+ 
+def addDict(d1,d2): 
+    new = {} 
+    for key in d1.keys(): 
+        new[key] = d1[key] 
+    for key in d2: 
+        new[key] = d2[key] 
+    return new 
+
+【例030】求质数
+复制代码 代码如下:
+
+def isPrime(y): 
+    if y < 1: 
+        print y, 'not prime' 
+    else: 
+        x = y // 2 
+        while x>1: 
+            if y % x == 0: 
+                print y, 'has factor', x 
+                break 
+            x -= 1 
+        else: 
+            print y, 'is prime!' 
+
+【例031】比较多个值的大小
+复制代码 代码如下:
+
+def min_max(func,*args): 
+    res = args[0] 
+    for arg in args[1:]: 
+        if func(arg,res): 
+            res = arg 
+    return res 
+ 
+def min_func(x,y): return x < y 
+def max_func(x,y): return x > y 
+ 
+if __name__=='__main__': 
+    print "The min value is:", min_max(min_func,4,3,2,1,7,6,9) 
+    print "The max value is:", min_max(max_func,4,3,2,1,7,6,9) 
+     
+# 输出结果:       
+>>>  
+The min value is: 1 
+The max value is: 9  
+
+【例032】写一个小函数实现内置函数dir的功能
+复制代码 代码如下:
+
+#Filename: mydir.py 
+ 
+tag = 1 
+ 
+def listing(module): 
+    if tag: 
+        print '-'*30 
+        print 'name:', module.__name__,'file:', module.__file__ 
+        print '-'*30 
+ 
+    count = 0 
+    for attr in module.__dict__.keys(): 
+        if attr[0:2] == '__': 
+            print '%02d) %s' % (count, attr) 
+        else: 
+            print getattr(module,attr) 
+        count = count + 1 
+ 
+    if tag: 
+        print '-'*30 
+        print module.__name__, 'has %d names.' % count 
+        print '-'*30 
+ 
+if __name__=='__main__': 
+    import mydir 
+    listing(mydir) 
+
+【例033】求分数平均值
+复制代码 代码如下:
+
+'''''Filename: grades.txt   求该文件中第二列的平均值
+Jerry  78
+Alice  45
+Wendy 96
+Tom    56
+Bob   85
+''' 
+ 
+temp = [] 
+for line in open('grades.txt'): 
+    a = line.strip().split() 
+    if a: 
+        temp.append(a[1]) 
+         
+#['78', '45', '96', '56', '85'] 
+total = 0 
+for i in temp: 
+    total += int(i) 
+ 
+print 'The total grade is:', total, 'The average is:', total/len(tmp)
+
+【例034】一个实际类的例子
+复制代码 代码如下:
+
+class GenericDisplay: 
+    def gatherAttrs(self): 
+        attrs = '\n' 
+        for key in self.__dict__: 
+            attrs += '\t%s=%s\n' % (key, self.__dict__[key]) 
+        return attrs 
+    def __str__(self): 
+        return '<%s: %s>' % (self.__class__.__name__, self.gatherAttrs()) 
+         
+class Person(GenericDisplay): 
+    def __init__(self, name, age): 
+        self.name = name 
+        self.age  = age 
+    def lastName(self): 
+        return self.name.split()[-1] 
+    def birthDay(self): 
+        self.age += 1 
+ 
+class Employee(Person): 
+    def __init__(self, name, age, job=None, pay=0): 
+        Person.__init__(self, name, age) 
+        self.job = job 
+        self.pay = pay 
+    def birthDay(self): 
+        self.age += 2 
+    def giveRaise(self, percent): 
+        self.pay *= (1.0 + percent) 
+ 
+if __name__ == '__main__': 
+    bob = Person('Bob Smith', 40) 
+    print bob 
+    print bob.lastName() 
+    bob.birthDay() 
+    print bob 
+ 
+    sue = Employee('Sue Jones', 44, job='dev', pay=100000) 
+    print sue 
+    print sue.lastName 
+    sue.birthDay() 
+    sue.giveRaise(.10) 
+    print sue 
+
+【例035】根据给定的年月日以数字方式打印出日期(February 27th, 2015)
+复制代码 代码如下:
+
+# coding = UTF-8 
+#根据给定的年月日以数字形式打印出日期 
+months = [ 
+    'January' , 
+    'February', 
+    'March'   , 
+    'April'   , 
+    'May'     , 
+    'June'    , 
+    'July'    , 
+    'August'  , 
+    'September', 
+    'October'  , 
+    'November' , 
+    'December' 
+    ] 
+#以1~31的数字作为结尾的列表 
+endings = ['st','nd','rd'] + 17 * ['th'] + \ 
+          ['st','nd','rd'] + 07 * ['th'] + \ 
+                                  ['st'] 
+ 
+year  = raw_input('Year: ') 
+month = raw_input('Month(1-12): ') 
+day   = raw_input('Day(1-31): ') 
+ 
+month_number = int(month) 
+day_number   = int(day) 
+#月份和天数减1来获得正确的索引 
+month_name   = months[month_number - 1] 
+ordinal      = day + endings[day_number - 1] 
+ 
+print month_name + ' ' + ordinal + ', ' + year 
+ 
+#输出结果 
+>>>  
+Year: 2015 
+Month(1-12): 2 
+Day(1-31): 27 
+February 27th, 2015 
+
+【例036】在居中的盒子里打印一条语句
+复制代码 代码如下:
+
+sentence = raw_input("Sentence: ") 
+ 
+screen_width = 80 
+text_width   = len(sentence) 
+box_width    = text_width + 6 
+left_margin  = (screen_width - box_width) // 2 
+ 
+print 
+print ' '*left_margin + '+'  + '-'*(box_width-4) + '+' 
+print ' '*left_margin + '| ' + ' '*(text_width)  +' |' 
+print ' '*left_margin + '| ' +      sentence     +' |' 
+print ' '*left_margin + '| ' + ' '*(text_width)  +' |' 
+print ' '*left_margin + '+'  + '-'*(box_width-4) + '+' 
+print 
+ 
+#输出结果 
+>>>  
+Sentence: Welcome To Beijing! 
+ 
+                           +---------------------+ 
+                           |                     | 
+                           | Welcome To Beijing! | 
+                           |                     | 
+                           +---------------------+ 
+
+【例037】简单小数据库验证
+复制代码 代码如下:
+
+database = [ 
+    ['Bob', '1234'], 
+    ['Tom', '2345'], 
+    ['Foo', '1478'] 
+    ] 
+usr = raw_input('Enter username: ') 
+pwd = raw_input('Enter password: ') 
+ 
+if [usr, pwd] in database: 
+    print 'Access Granted!' 
+else: 
+    print 'Access Deny!' 
+
+【例038】使用给定的宽度打印格式化后的价格列表
+复制代码 代码如下:
+
+width = input('Please enter width: ') 
+ 
+price_width = 10 
+item_width  = width - price_width 
+ 
+header_format = '%-*s%*s' 
+format        = '%-*s%*.2f' 
+ 
+print '=' * width 
+ 
+print header_format % (item_width, 'Item', price_width, 'Price') 
+ 
+print '-' * width 
+ 
+print format % (item_width, 'Apples', price_width, 0.4) 
+print format % (item_width, 'Sweets', price_width, 0.5) 
+print format % (item_width, 'Pepper', price_width, 12.94) 
+print format % (item_width, 'Tender', price_width, 42) 
+ 
+print '-' * width 
+
+输出格式:
+复制代码 代码如下:
+
+>>>  
+Please enter width: 30 
+============================== 
+Item                     Price 
+------------------------------ 
+Apples                    0.40 
+Sweets                    0.50 
+Pepper                   12.94 
+Tender                   42.00 
+------------------------------ 
+
+【例039】遍历两个对应列表
+复制代码 代码如下:
+
+names   = ['Alice', 'Bob' , 'Cherry', 'David'] 
+numbers = ['0000' , '1111', '2222'  , '3333' ] 
+ 
+for index,name in enumerate(names): 
+    print '%-7s=> %s' % (name, numbers[index]) 
+ 
+#输出结果 
+>>>  
+Alice  => 0000 
+Bob    => 1111 
+Cherry => 2222 
+David  => 3333 
+
+当然也可以采用如下通常的做法:
+复制代码 代码如下:
+
+names = ['Alice','Bob', 'John', 'Fred'] 
+ages  = [27, 23, 31, 29] 
+for i in range(len(ages)): 
+    print names[i],' is ', ages[i], ' years old!' 
+ 
+#输出结果: 
+>>>  
+Alice  is  27  years old! 
+Bob  is  23  years old! 
+John  is  31  years old! 
+Fred  is  29  years old! 
+
+【例040】对存储在小字典中数据进行查询
+复制代码 代码如下:
+
+peoples = { 
+    'Alice':{ 
+              'phone'    : '0948', 
+              'address'  : 'aaaa' 
+            }, 
+    'Wendy':{ 
+              'phone'    : '4562', 
+              'address'  : 'bbbb' 
+            }, 
+    'David':{ 
+              'phone'    : '4562', 
+              'address'  : 'bbbb' 
+            } 
+    } 
+#字典使用人名作为键。每个人用另外一个字典来表示，其键'phone'和'addr'分别表示他们的电话号码和地址 
+ 
+ 
+labels = { 
+    'phone'   : 'phone number', 
+    'address' : 'address' 
+    } 
+#针对电话号码和地址使用描述性标签，会在打印输出时用到。 
+key = '' 
+name = raw_input('Name: ') 
+ 
+ 
+if name in peoples: 
+    request = raw_input('Enter (p) or (a): ') 
+    if request == 'p': 
+        key = 'phone' 
+    elif request == 'a': 
+        key = 'address' 
+    else: 
+        print 'Please input p(phone) an a(address)!' 
+    print "%s's %s is %s" % (name, labels[key],peoples[name][key]) 
+ 
+else: 
+    print 'Not Found!' 
+
+或者使用字典的get()方法，更好些。完整代码如下:
+复制代码 代码如下:
+
+#字典使用人名作为键。每个人用另外一个字典来表示，其键'phone'和'addr'分别表示他们的电话号码和地址  
+peoples = {   
+    'Alice':{   
+              'phone'    : '0948',   
+              'address'  : 'aaaa'   
+            },   
+    'Wendy':{   
+              'phone'    : '4562',   
+              'address'  : 'bbbb'   
+            },   
+    'David':{   
+              'phone'    : '4562',   
+              'address'  : 'bbbb'   
+            }   
+    }   
+  
+   
+#针对电话号码和地址使用描述性标签，会在打印输出时用到。    
+labels = {   
+    'phone'   : 'phone number',   
+    'addr'    : 'address'   
+    }   
+ 
+name = raw_input('Name: ') 
+#查找电话号码还是地址? 
+request = raw_input('Phone number (p) or address (a)? ') 
+ 
+#查找正确的键 
+key = request     #如果请求即不是p也不是a 
+if request == 'p': key = 'phone' 
+if request == 'a': key = 'addr' 
+ 
+#使用get()函数提供默认值 
+person = peoples.get(name,{}) 
+label  = labels.get(key, key) 
+result = person.get(key, 'not available') 
+ 
+print "%s's %s is %s." % (name, label, result) 
+
+【例041】字典格式化字符串例子
+复制代码 代码如下:
+
+template='''''<html>
+<head><title></title></head>
+<h1>%(title)s</h1>
+<p1>%(text)s</p1>
+<body></body>
+</html>''' 
+ 
+data = {'title':'My Home Page','text':'Welcome to my home page!'} 
+print template % data 
+ 
+#输出结果: 
+>>>  
+<html> 
+<head><title></title></head> 
+<h1>My Home Page</h1> 
+<p1>Welcome to my home page!</p1> 
+<body></body> 
+</html> 
+
+【例042】需找100以内的最大平方数
+复制代码 代码如下:
+
+from math import sqrt 
+#从100开始往下找，找到即停止，最大为: 81 
+for n in range(99, 0, -1): 
+    root = sqrt(n) 
+    if root == int(root): 
+        print n 
+        break 
+
+【例043】用while/True, break控制输入
+复制代码 代码如下:
+
+while True: #一直进行下去，除非break 
+    word = raw_input('Please Enter a word: ') 
+    if not word: break   #输入为空的话，中断循环 
+    print 'The word was: ' + word 
+
+【例044】将两个列表中首字母相同的提取出来
+复制代码 代码如下:
+
+#将两个列表中首字母相同的罗列在一起 
+girls = ['alice', 'bernice', 'clarice'] 
+boys  = ['chris', 'arnold', 'bob'] 
+#列表推导:  
+print [b+'+'+g for b in boys for g in girls if b[0] == g[0]] 
+#输出结果: 
+>>>  
+['chris+clarice', 'arnold+alice', 'bob+bernice'] 
+
+【例045】斐波那契数列求指定数字的列表
+复制代码 代码如下:
+
+def fibs(x): 
+    fibs = [0, 1] # 初始值 
+    for i in range(x): 
+        # fibs[-2]+fibs[-1]：最新一个值是前面两个值之和 
+        # 并用append方法将其添加在后面 
+        fibs.append(fibs[-2]+fibs[-1])  
+    print fibs 
+     
+if __name__=='__main__': 
+    num  = input('How many Fibonacci numbers do you want? ') 
+    fibs(num) 
+
+或者用普通方法实现:
+复制代码 代码如下:
+
+>>> def fib(max): 
+    n, a, b  = 0, 0, 1 
+    tmp_list = [] 
+    while n < max: 
+        tmp_list.append(a) 
+        a, b = b, a+b 
+        n += 1 
+    return tmp_list 
+ 
+>>> fib(8) 
+[0, 1, 1, 2, 3, 5, 8, 13] 
+
+【例046】写一个自定义列表类，让它支持尽可能多的支持操作符号
+复制代码 代码如下:
+
+class MyList: 
+    def __init__(self, start): 
+        self.wrapped = [] # Make sure it's a list here 
+        for x in start: 
+            self.wrapped.append(x) 
+    def __add__(self, other): 
+        return MyList(self.wrapped + other) 
+    def __mul__(self, time): 
+        return MyList(self.wrapped * time) 
+    def __getitem__(self, offset): 
+        return self.wrapped[offset] 
+    def __len__(self): 
+        return len(self.wrapped) 
+    def __getslice__(self, low, high): 
+        return MyList(self.wrapped[low:high]) 
+    def append(self, node): 
+        self.wrapped.append(node) 
+    def __getattr__(self, name): # Other members: sort/reverse/etc 
+        return getattr(self.wrapped, name) 
+    def __repr__(self): 
+        return repr(self.wrapped) 
+ 
+if __name__ == '__main__': 
+    x = MyList('spam') 
+    print x 
+    print x[2] 
+    print x[1:] 
+    print x + ['eggs'] 
+    print x * 3 
+    x.append('a') 
+    x.sort() 
+    for c in x: 
+        print c, 
+ 
+# 输出结果如下: 
+>>>  
+['s', 'p', 'a', 'm'] 
+a 
+['p', 'a', 'm'] 
+['s', 'p', 'a', 'm', 'eggs'] 
+['s', 'p', 'a', 'm', 's', 'p', 'a', 'm', 's', 'p', 'a', 'm'] 
+a a m p s 
+
+【例047】用urllib模块来批量下载图片
+复制代码 代码如下:
+
+import re 
+import urllib 
+ 
+def getHtml(url): 
+    page = urllib.urlopen(url) 
+    html = page.read() 
+    return html 
+ 
+def getImg(html): 
+    reg = r'src="(.*?\.jpg)" width' 
+    imgre = re.compile(reg) 
+    imgList = re.findall(imgre, html) 
+    x = 0    
+    for imgurl in imgList: 
+        urllib.urlretrieve(imgurl, '%s.img' % x)   # urlretrieve()下载图片 
+        x += 1 
+         
+html = getHtml("http://www.w3cschool.cc/") 
+print getImg(html) 
+
+【例048】用PyQt4实现简单的按钮事件（Hello,World!）
+复制代码 代码如下:
+
+# -*- coding: utf-8 -*- 
+ 
+import sys 
+from PyQt4 import QtCore, QtGui 
+ 
+# 自定义的窗口类 
+class TestWindow(QtGui.QWidget): 
+    # 窗口初始化 
+    def __init__(self, parent = None): 
+        super(TestWindow, self).__init__(parent) 
+        self.setWindowTitle(u'胡桃夹子') 
+ 
+        # 创建按钮 
+        self.pushButton = QtGui.QPushButton(u'测试按钮') 
+ 
+        # 创建文本框 
+        self.textEdit = QtGui.QTextEdit() 
+ 
+        # 创建垂直布局 
+        layout = QtGui.QVBoxLayout() 
+ 
+        # 将控件添加到布局中 
+        layout.addWidget(self.textEdit) 
+        layout.addWidget(self.pushButton) 
+ 
+        # 设置窗口布局 
+        self.setLayout(layout) 
+ 
+        # 设置按钮单击动作 
+        self.pushButton.clicked.connect(self.sayHello) 
+ 
+    # 按钮动作处理 
+    def sayHello(self): 
+        self.textEdit.setText('Hello World!') 
+ 
+# 程序主入口 
+if __name__=='__main__': 
+    app = QtGui.QApplication(sys.argv) 
+    mainWindow = TestWindow() 
+    mainWindow.show() 
+    sys.exit(app.exec_()) 
+
+【例049】用python解析文本的一个例子
+假如配置文件如下, 要确保配置文件行为tablename后面的level中值给读取出来
+复制代码 代码如下:
+
+#FileName: data.conf 
+(tablename  "A__employee__id.sql") 
+(userid     "000001") 
+(number     "100001") 
+(level      "P1") 
+ 
+ 
+(tablename  "B__employee__id.sql") 
+(userid     "100001") 
+(number     "100000") 
+(level      "P2") 
+ 
+ 
+(tablename  "C_other_table.sql") 
+(userid     "000001") 
+(number     "100001") 
+(level      "P2") 
+ 
+ 
+(tablename  "C__employee__table.sql") 
+(userid     "000001") 
+(number     "100001") 
+(level      "P3")
+
+代码如下:
+复制代码 代码如下:
+
+def parse_File(filename): 
+    tmp = [] 
+    fh = open(filename) 
+    line = fh.readline() 
+    flag = 0 
+    while line: 
+        if "tablename" in line and "__employee__" in line: 
+            count = 0 
+            flag  = 1 
+        if flag == 1: 
+            count += 1 
+            if count == 4 and "level" in line: 
+                value = line.split(r'"')[1] 
+                tmp.append(value) 
+        line = fh.readline() 
+    return tmp 
+ 
+ 
+if __name__ == '__main__': 
+    print parse_File('data.conf')  
